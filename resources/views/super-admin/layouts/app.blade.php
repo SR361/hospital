@@ -25,6 +25,8 @@
     <link href="{{ asset('admin/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css')}}" rel="stylesheet">
 
     <link href="{{ asset('admin/vendors/iCheck/skins/flat/green.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.8/dist/sweetalert2.min.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
   </head>
 
   <body class="nav-md">
@@ -142,8 +144,14 @@
     <script src="{{ asset('admin/vendors/datatables.net-scroller/js/dataTables.scroller.min.js')}}"></script>
 
     <script src="{{ asset('admin/vendors/iCheck/icheck.min.js')}}"></script>
-
     <!-- Custom Theme Scripts -->
     <script src="{{ asset('admin/build/js/custom.min.js')}}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.8/dist/sweetalert2.all.min.js"></script>
+    <script>
+        var base_url = "{{ url('/superadmin') }}";
+        var token = "{{ csrf_token() }}";
+    </script>
+    @stack('script')
   </body>
 </html>

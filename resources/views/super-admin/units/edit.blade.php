@@ -11,16 +11,17 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left units-form"
-                            action="{{ route('units.store') }}"
+                            action="{{ route('units.update',[$units->id]) }}"
                             redirecturl="{{ route('units.index') }}"
                             method="post">
+                            @method('PATCH')
                             <div class="item form-group">
                                 <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Division</label>
                                 <div class="col-md-6 col-sm-6 ">
                                     <select class="select2_single form-control" name="division_id" tabindex="-1">
                                         <option value="">Select Division</option>
                                         @foreach($division as $row)
-                                            <option value="{{ $row->id }}">{{ $row->name }}</option>
+                                            <option @if($row->id == $units->division_id) selected @endif value="{{ $row->id }}">{{ $row->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -28,45 +29,56 @@
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Name</label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input type="text" id="first-name" name="name" required="required" class="form-control ">
+                                    <input value="{{$units->name}}" type="text" id="first-name" name="name" required="required" class="form-control ">
                                 </div>
                             </div>
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Short Name</label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input type="text" id="last-name" name="short_name" required="required" class="form-control">
+                                    <input value="{{$units->short_name}}" type="text" id="last-name" name="short_name" required="required" class="form-control">
                                 </div>
                             </div>
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align">LS</label>
+                                @php
+                                    $ls = json_decode($units->ls);
+                                    $ls = implode(',',$ls);
+                                    $ls = explode(',',$ls);
+                                @endphp
                                 <div class="checkbox mt-2">
                                     <label>
-                                        <input type="checkbox" name="ls[]" value="Medical" class="flat"> Medical
+                                        <input type="checkbox" name="ls[]" value="Medical" class="flat"
+                                        @if(in_array('Medical',$ls)) checked @endif> Medical
                                     </label>
                                 </div>
                                 <div class="checkbox mt-2 ml-2">
                                     <label>
-                                        <input type="checkbox" name="ls[]" value="Surgical" class="flat"> Surgical
+                                        <input type="checkbox" name="ls[]" value="Surgical" class="flat"
+                                        @if(in_array('Surgical',$ls)) checked @endif> Surgical
                                     </label>
                                 </div>
                                 <div class="checkbox mt-2 ml-2">
                                     <label>
-                                        <input type="checkbox" name="ls[]" value="Paediatric" class="flat"> Paediatric
+                                        <input type="checkbox" name="ls[]" value="Paediatric" class="flat"
+                                        @if(in_array('Paediatric',$ls)) checked @endif> Paediatric
                                     </label>
                                 </div>
                                 <div class="checkbox mt-2 ml-2">
                                     <label>
-                                        <input type="checkbox" name="ls[]" value="Critical Care" class="flat"> Critical Care
+                                        <input type="checkbox" name="ls[]" value="Critical Care" class="flat"
+                                        @if(in_array('Critical Care',$ls)) checked @endif> Critical Care
                                     </label>
                                 </div>
                                 <div class="checkbox mt-2 ml-2">
                                     <label>
-                                        <input type="checkbox" name="ls[]" value="Women Health" class="flat"> Women Health
+                                        <input type="checkbox" name="ls[]" value="Women Health" class="flat"
+                                        @if(in_array('Women Health',$ls)) checked @endif> Women Health
                                     </label>
                                 </div>
                                 <div class="checkbox mt-2 ml-2">
                                     <label>
-                                        <input type="checkbox" name="ls[]" value="Procedural" class="flat"> Procedural
+                                        <input type="checkbox" name="ls[]" value="Procedural" class="flat"
+                                        @if(in_array('Procedural',$ls)) checked @endif> Procedural
                                     </label>
                                 </div>
                             </div>

@@ -11,9 +11,9 @@
             <li>
                 <a><i class="fa fa-circle-o"></i> Services <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="{{ route('super.admin.divisions') }}">Divisions </a></li>
-                    <li><a href="{{ route('super.admin.units') }}">Units </a></li>
+                    <li><a href="{{ route('divisions.index') }}">Divisions </a></li>
                     <li><a href="{{ route('super.admin.learning.specialty') }}">Learning Specialty</a></li>
+                    <li><a href="{{ route('units.index') }}">Units </a></li>
                 </ul>
             </li>
             <li>

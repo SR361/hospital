@@ -6,7 +6,7 @@
             <div class="x_title">
                 <h2>{{$page}}</h2>
                 <ul class="nav navbar-right panel_toolbox">
-                    <a href="{{ route('super.admin.units.create') }}" class="btn btn-sm btn-success">
+                    <a href="{{ route('units.create') }}" class="btn btn-sm btn-success">
                         <i class="fa fa-plus"></i> Add {{$page}}
                     </a>
                 </ul>
@@ -16,57 +16,18 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card-box table-responsive">
-                        <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action" style="width:100%">
+                        <table id="units-datatable" class="table table-striped table-bordered bulk_action" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Id</th>
+                                    <th>Division</th>
                                     <th>Name</th>
                                     <th>Short Name</th>
-                                    <th>Division</th>
+                                    <th>LS</th>
                                     <th>Option</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>61</td>
-                                    <td>Tiger Nixon</td>
-                                    <td>System Architect</td>
-                                    <td>Edinburgh</td>
-                                    <td>
-                                        <span class="btn btn-sm btn-success">Edit</span>
-                                        <span class="btn btn-sm btn-danger">Delete</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>63</td>
-                                    <td>Garrett Winters</td>
-                                    <td>Accountant</td>
-                                    <td>Tokyo</td>
-                                    <td>
-                                        <span class="btn btn-sm btn-success">Edit</span>
-                                        <span class="btn btn-sm btn-danger">Delete</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>66</td>
-                                    <td>Ashton Cox</td>
-                                    <td>Junior Technical Author</td>
-                                    <td>San Francisco</td>
-                                    <td>
-                                        <span class="btn btn-sm btn-success">Edit</span>
-                                        <span class="btn btn-sm btn-danger">Delete</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>22</td>
-                                    <td>Cedric Kelly</td>
-                                    <td>Senior Javascript Developer</td>
-                                    <td>Edinburgh</td>
-                                    <td>
-                                        <span class="btn btn-sm btn-success">Edit</span>
-                                        <span class="btn btn-sm btn-danger">Delete</span>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -78,3 +39,54 @@
   </div>
 
 @endsection
+@push('script')
+    <script>
+        var table = $("#units-datatable").DataTable({
+            "pagingType": "full_numbers",
+            "processing": true,
+            "serverSide": true,
+            "order": [1, 'desc'],
+            "ajax": {
+                "url": base_url + "/units/datatable",
+                "dataType": "json",
+                "type": "POST",
+                data: function(data) {
+                    data._token = token;
+                }
+            },
+            columnDefs: [{
+                "targets": [1],
+                "orderable": false
+            }]
+        });
+
+        function confirmDeletion(url){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to delete this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        data: {"_token": token},
+                        success: function(data) {
+                            $('#units-datatable').DataTable().ajax.reload();
+                            Swal.fire(
+                                'Deleted!',
+                                'Your record has been deleted.',
+                                'success'
+                            )
+                            table.ajax.reload();
+                        }
+                    });
+                }
+            })
+        }
+    </script>
+@endpush
