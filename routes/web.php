@@ -35,12 +35,10 @@ Route::group(['prefix' => 'superadmin', "middleware" => ['is_super_admin']], fun
 
     Route::resource('divisions', DivisionController::class);
     Route::post('divisions/datatable', [DivisionController::class, 'datatable'])->name('super.admin.divisions.datatable');
-    // Route::get('divisions', [ServicesController::class, 'divisions'])->name('super.admin.divisions');
 
     Route::resource('units', UnitsController::class);
     Route::post('units/datatable', [UnitsController::class, 'datatable'])->name('super.admin.units.datatable');
-    // Route::get('units', [ServicesController::class, 'units'])->name('super.admin.units');
-    // Route::get('units/create', [ServicesController::class, 'unitsCreate'])->name('super.admin.units.create');
+    Route::get('unit/capacity', [UnitsController::class, 'capacity'])->name('super.admin.unit.capacity');
 
     Route::get('learning-specialty', [ServicesController::class, 'learningSpecialty'])->name('super.admin.learning.specialty');
 

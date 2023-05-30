@@ -6,12 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Division;
 use App\Models\Unit;
+use App\Models\LearningSpecialty;
+use App\Models\TraineeCapacity;
 
 class UnitsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $page = 'Units';
@@ -41,19 +40,17 @@ class UnitsController extends Controller
 
         $jsonArray['recordsFiltered'] = $data->count();
 
-        $data = $data->with('divisions')->orderby($column, $dir)->offset($offset)->limit($limit)->get();
+        $data = $data->with(['divisions','LearningSpecialty'])->orderby($column, $dir)->offset($offset)->limit($limit)->get();
         $jsonArray['data'] = array();
         $index = 0;
         foreach ($data as $r) {
-            $ls = json_decode($r->ls);
-            $ls = implode(',',$ls);
             $index++;
             $jsonObject = array();
             $jsonObject[] = $index;
             $jsonObject[] = $r->divisions->name;
             $jsonObject[] = $r->name;
             $jsonObject[] = $r->short_name;
-            $jsonObject[] = $ls;
+            $jsonObject[] = $r->LearningSpecialty->name;
             $jsonObject[] ='
                 <a href="'.route('units.edit',[$r->id]).'" class="btn btn-sm btn-success">Edit</a>
                 <span onclick="confirmDeletion(`'.route('units.destroy',[$r->id]).'`)" class="btn btn-sm btn-danger">Delete</span>';
@@ -63,81 +60,76 @@ class UnitsController extends Controller
         return json_encode($jsonArray);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $division = Division::get();
+        $learning = LearningSpecialty::get();
         $page = "Create Units";
-        return view('super-admin.units.create',compact('page','division'));
+        return view('super-admin.units.create',compact('page','division','learning'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'division_id'       => 'required',
             'name'              => 'required',
-            'short_name'        => 'required'
+            'short_name'        => 'required',
+            'ls_id'             => 'required'
         ]);
-        $ls = json_encode($request->ls);
 
-        $data = $request->only('division_id','name','short_name');
-        $data['ls'] = $ls;
-        Unit::create($data);
-
+        $data = $request->only('division_id','name','short_name','ls_id');
+        $data['status'] = 1;
+        $units = Unit::create($data);
+        TraineeCapacity::create([
+            'units_id' => $units->id
+        ]);
         return response()->json(['success' => true, 'message' => 'Units create successfully']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $units = Unit::where('id',$id)->with('divisions')->first();
+        $learning = LearningSpecialty::get();
         $page = 'Edit Units';
         $division = Division::get();
-        return view('super-admin.units.edit',compact('page','units','division'));
+        return view('super-admin.units.edit',compact('page','units','division','learning'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $request->validate([
             'division_id'       => 'required',
             'name'              => 'required',
-            'short_name'        => 'required'
+            'short_name'        => 'required',
+            'ls_id'             => 'required'
         ]);
         $ls = json_encode($request->ls);
         $unit = Unit::find($id);
         $unit->division_id = $request->division_id;
         $unit->name = $request->name;
         $unit->short_name = $request->short_name;
-        $unit->ls = $ls;
+        $unit->ls_id = $request->ls_id;
         $unit->save();
 
         return response()->json(['success' => true, 'message' => 'Unit update successfully']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
+        TraineeCapacity::where('units_id',$id)->delete();
         Unit::findOrFail($id)->delete();
         return response()->json(['success' => true, 'message' => 'Unit delete successfully']);
     }
+
+
+    // ======================================== Capacity ========================================
+        public function capacity(){
+            $page = 'Capacity';
+            $learning = LearningSpecialty::get();
+            // dd($learning);
+            $traineecapacity = TraineeCapacity::with('units')->get();
+            // dd($learning);
+            return view('super-admin.units.capacity',compact('page','learning','traineecapacity'));
+        }
+    // ======================================== Capacity ========================================
 }

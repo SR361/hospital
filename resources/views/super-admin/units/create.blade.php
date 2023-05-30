@@ -39,36 +39,15 @@
                             </div>
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align">LS</label>
-                                <div class="checkbox mt-2">
-                                    <label>
-                                        <input type="checkbox" name="ls[]" value="Medical" class="flat"> Medical
-                                    </label>
-                                </div>
-                                <div class="checkbox mt-2 ml-2">
-                                    <label>
-                                        <input type="checkbox" name="ls[]" value="Surgical" class="flat"> Surgical
-                                    </label>
-                                </div>
-                                <div class="checkbox mt-2 ml-2">
-                                    <label>
-                                        <input type="checkbox" name="ls[]" value="Paediatric" class="flat"> Paediatric
-                                    </label>
-                                </div>
-                                <div class="checkbox mt-2 ml-2">
-                                    <label>
-                                        <input type="checkbox" name="ls[]" value="Critical Care" class="flat"> Critical Care
-                                    </label>
-                                </div>
-                                <div class="checkbox mt-2 ml-2">
-                                    <label>
-                                        <input type="checkbox" name="ls[]" value="Women Health" class="flat"> Women Health
-                                    </label>
-                                </div>
-                                <div class="checkbox mt-2 ml-2">
-                                    <label>
-                                        <input type="checkbox" name="ls[]" value="Procedural" class="flat"> Procedural
-                                    </label>
-                                </div>
+                                @php $index = 0 @endphp
+                                @foreach($learning as $row)
+                                    <div class="radio mt-2 @if($index != 0) ml-2 @endif">
+                                        <label>
+                                            <input type="radio" name="ls_id" value="{{$row->id}}" class="flat"> {{$row->name}}
+                                        </label>
+                                    </div>
+                                    @php $index++; @endphp
+                                @endforeach
                             </div>
                             <div class="ln_solid"></div>
                             <div class="item form-group">
@@ -130,7 +109,7 @@
                         icon: 'warning',
                         title: errors.message,
                         showConfirmButton: false,
-                        timer: 4000
+                        timer: 9000
                     })
 
                     errorsHtml = '<div class="text-danger">';
@@ -142,7 +121,7 @@
                             icon: 'warning',
                             title: v,
                             showConfirmButton: false,
-                            timer: 4000
+                            timer: 9000
                         })
                     });
                     errorsHtml += '</div>';

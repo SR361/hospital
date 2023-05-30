@@ -12,16 +12,6 @@ class ServicesController extends Controller
         return view('super-admin.service.divisions',compact('page'));
     }
 
-    public function units(){
-        $page = 'Units';
-        return view('super-admin.units.index',compact('page'));
-    }
-
-    public function unitsCreate(){
-        $page = "Create Units";
-        return view('super-admin.units.create',compact('page'));
-    }
-
     public function learningSpecialty(){
         $page = 'Learning Specialty';
         return view('super-admin.service.learning-specialty',compact('page'));

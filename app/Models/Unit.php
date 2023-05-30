@@ -12,11 +12,17 @@ class Unit extends Model
         'division_id',
         'name',
         'short_name',
-        'ls',
+        'ls_id',
+        'status'
     ];
 
     public function divisions()
     {
         return $this->belongsTo(Division::class, 'division_id');
+    }
+
+    public function LearningSpecialty()
+    {
+        return $this->belongsTo(LearningSpecialty::class, 'ls_id');
     }
 }

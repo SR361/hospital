@@ -40,47 +40,15 @@
                             </div>
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align">LS</label>
-                                @php
-                                    $ls = json_decode($units->ls);
-                                    $ls = implode(',',$ls);
-                                    $ls = explode(',',$ls);
-                                @endphp
-                                <div class="checkbox mt-2">
-                                    <label>
-                                        <input type="checkbox" name="ls[]" value="Medical" class="flat"
-                                        @if(in_array('Medical',$ls)) checked @endif> Medical
-                                    </label>
-                                </div>
-                                <div class="checkbox mt-2 ml-2">
-                                    <label>
-                                        <input type="checkbox" name="ls[]" value="Surgical" class="flat"
-                                        @if(in_array('Surgical',$ls)) checked @endif> Surgical
-                                    </label>
-                                </div>
-                                <div class="checkbox mt-2 ml-2">
-                                    <label>
-                                        <input type="checkbox" name="ls[]" value="Paediatric" class="flat"
-                                        @if(in_array('Paediatric',$ls)) checked @endif> Paediatric
-                                    </label>
-                                </div>
-                                <div class="checkbox mt-2 ml-2">
-                                    <label>
-                                        <input type="checkbox" name="ls[]" value="Critical Care" class="flat"
-                                        @if(in_array('Critical Care',$ls)) checked @endif> Critical Care
-                                    </label>
-                                </div>
-                                <div class="checkbox mt-2 ml-2">
-                                    <label>
-                                        <input type="checkbox" name="ls[]" value="Women Health" class="flat"
-                                        @if(in_array('Women Health',$ls)) checked @endif> Women Health
-                                    </label>
-                                </div>
-                                <div class="checkbox mt-2 ml-2">
-                                    <label>
-                                        <input type="checkbox" name="ls[]" value="Procedural" class="flat"
-                                        @if(in_array('Procedural',$ls)) checked @endif> Procedural
-                                    </label>
-                                </div>
+                                @php $index = 0 @endphp
+                                @foreach($learning as $row)
+                                    <div class="radio mt-2 @if($index != 0) ml-2 @endif">
+                                        <label>
+                                            <input type="radio" name="ls_id" value="{{$row->id}}" @if($units->ls_id == $row->id) checked @endif class="flat"> {{$row->name}}
+                                        </label>
+                                    </div>
+                                    @php $index++; @endphp
+                                @endforeach
                             </div>
                             <div class="ln_solid"></div>
                             <div class="item form-group">
