@@ -14,7 +14,7 @@
                     <li><a href="{{ route('divisions.index') }}">Divisions </a></li>
                     <li><a href="{{ route('super.admin.learning.specialty') }}">Learning Specialty</a></li>
                     <li><a href="{{ route('units.index') }}">Units</a></li>
-                    <li><a href="{{ route('super.admin.unit.capacity') }}">Capacity</a></li>
+                    <li><a href="{{ route('unitscapacity.index') }}">Capacity</a></li>
                 </ul>
             </li>
             <li>

@@ -24,6 +24,7 @@
                                     <th>Name</th>
                                     <th>Short Name</th>
                                     <th>LS</th>
+                                    <th>Status</th>
                                     <th>Option</th>
                                 </tr>
                             </thead>

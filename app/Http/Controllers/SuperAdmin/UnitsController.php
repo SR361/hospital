@@ -44,6 +44,11 @@ class UnitsController extends Controller
         $jsonArray['data'] = array();
         $index = 0;
         foreach ($data as $r) {
+            if($r->status == '1'){
+                $status = '<span class="badge badge-success">Yes</span>';
+            }else{
+                $status = '<span class="badge badge-danger">No</span>';
+            }
             $index++;
             $jsonObject = array();
             $jsonObject[] = $index;
@@ -51,6 +56,7 @@ class UnitsController extends Controller
             $jsonObject[] = $r->name;
             $jsonObject[] = $r->short_name;
             $jsonObject[] = $r->LearningSpecialty->name;
+            $jsonObject[] = $status;
             $jsonObject[] ='
                 <a href="'.route('units.edit',[$r->id]).'" class="btn btn-sm btn-success">Edit</a>
                 <span onclick="confirmDeletion(`'.route('units.destroy',[$r->id]).'`)" class="btn btn-sm btn-danger">Delete</span>';
@@ -126,49 +132,7 @@ class UnitsController extends Controller
 
 
     // ======================================== Capacity ========================================
-        public function capacity(){
-            $page = 'Capacity';
-            $learning = LearningSpecialty::get();
-            return view('super-admin.units.capacity',compact('page','learning'));
-        }
 
-        public function capacityDatatable(Request $request){
-
-            $jsonArray = array();
-            $jsonArray['draw'] = intval($request->input('draw'));
-            $columns = array(
-                0 => 'name',
-            );
-
-            $column = $columns[$request->order[0]['column']];
-            $dir = $request->order[0]['dir'];
-            $offset = $request->start;
-            $limit = $request->length;
-            $data = new Unit();
-            $data = $data->where('ls_id',$request->ls_id);
-            $jsonArray['recordsTotal'] = $data->count();
-
-            if ($request->search['value']) {
-                $search = $request->search['value'];
-                $data = $data->where('name', 'like', "%{$search}%");
-            }
-
-            $jsonArray['recordsFiltered'] = $data->count();
-
-            $data = $data->with('TraineeCapacity')->orderby($column, $dir)->offset($offset)->limit($limit)->get();
-            $jsonArray['data'] = array();
-            $index = 0;
-            foreach ($data as $r) {
-                $index++;
-                $jsonObject = array();
-                $jsonObject[] = $index;
-                $jsonObject[] = $r->name;
-                $jsonObject[] = '<input type="number" class="form-control w-50" value="'.$r->TraineeCapacity->capcaity.'" onkeyup="capacityupdate('.$r->TraineeCapacity->id.',this)">';
-                $jsonArray['data'][] = $jsonObject;
-            }
-
-            return json_encode($jsonArray);
-        }
         public function capacityUpdate(Request $request){
             $request->validate([
                 'capacity_id'       => 'required',

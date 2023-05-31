@@ -12,10 +12,8 @@
                         <ul class="nav navbar-right panel_toolbox mr-5">
                             <select name="" class="form-control mr-5 ls_id">
                                 <option value="">Select Learning Specialty</option>
-                                @php $index = 1 @endphp
                                 @foreach($learning as $row)
-                                    <option @if($index == 1) selected @endif value="{{$row->id}}">{{$row->name}}</option>
-                                    @php $index++ @endphp
+                                    <option value="{{$row->id}}">{{$row->name}}</option>
                                 @endforeach
                             </select>
                         </ul>
@@ -33,6 +31,7 @@
                                     <th>Id</th>
                                     <th>Units</th>
                                     <th>Capacity</th>
+                                    <th>Option</th>
                                 </tr>
                             </thead>
                         </table>
@@ -65,9 +64,10 @@
 
         function updateCapacity(){
             $.ajax({
-                url: "{{ route('super.admin.unit.capacity.update') }}",
+                url: "{{ route('unitscapacity.update',[1]) }}",
                 type: "POST",
                 data: {
+                    _method : 'PATCH',
                     _token: "{{ csrf_token() }}",
                     capacity_id: capacityid,
                     capacity: capacity
@@ -95,7 +95,7 @@
                 "serverSide": true,
                 "order": [0, 'desc'],
                 "ajax": {
-                    "url": base_url + "/unit/capacity/datatable",
+                    "url": base_url + "/unitscapacity/datatable",
                     "dataType": "json",
                     "type": "POST",
                     data: function(data) {
