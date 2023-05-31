@@ -25,4 +25,9 @@ class Unit extends Model
     {
         return $this->belongsTo(LearningSpecialty::class, 'ls_id');
     }
+
+    public function TraineeCapacity()
+    {
+        return $this->hasOne(TraineeCapacity::class, 'units_id');
+    }
 }

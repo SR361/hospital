@@ -74,11 +74,12 @@ class UnitsController extends Controller
             'division_id'       => 'required',
             'name'              => 'required',
             'short_name'        => 'required',
-            'ls_id'             => 'required'
+            'ls_id'             => 'required',
+            'status'            => 'required'
         ]);
 
-        $data = $request->only('division_id','name','short_name','ls_id');
-        $data['status'] = 1;
+        $data = $request->only('division_id','name','short_name','ls_id','status');
+
         $units = Unit::create($data);
         TraineeCapacity::create([
             'units_id' => $units->id
@@ -101,14 +102,16 @@ class UnitsController extends Controller
             'division_id'       => 'required',
             'name'              => 'required',
             'short_name'        => 'required',
-            'ls_id'             => 'required'
+            'ls_id'             => 'required',
+            'status'            => 'required',
         ]);
-        $ls = json_encode($request->ls);
+
         $unit = Unit::find($id);
         $unit->division_id = $request->division_id;
         $unit->name = $request->name;
         $unit->short_name = $request->short_name;
         $unit->ls_id = $request->ls_id;
+        $unit->status = $request->status;
         $unit->save();
 
         return response()->json(['success' => true, 'message' => 'Unit update successfully']);
@@ -126,10 +129,57 @@ class UnitsController extends Controller
         public function capacity(){
             $page = 'Capacity';
             $learning = LearningSpecialty::get();
-            // dd($learning);
-            $traineecapacity = TraineeCapacity::with('units')->get();
-            // dd($learning);
-            return view('super-admin.units.capacity',compact('page','learning','traineecapacity'));
+            return view('super-admin.units.capacity',compact('page','learning'));
+        }
+
+        public function capacityDatatable(Request $request){
+
+            $jsonArray = array();
+            $jsonArray['draw'] = intval($request->input('draw'));
+            $columns = array(
+                0 => 'name',
+            );
+
+            $column = $columns[$request->order[0]['column']];
+            $dir = $request->order[0]['dir'];
+            $offset = $request->start;
+            $limit = $request->length;
+            $data = new Unit();
+            $data = $data->where('ls_id',$request->ls_id);
+            $jsonArray['recordsTotal'] = $data->count();
+
+            if ($request->search['value']) {
+                $search = $request->search['value'];
+                $data = $data->where('name', 'like', "%{$search}%");
+            }
+
+            $jsonArray['recordsFiltered'] = $data->count();
+
+            $data = $data->with('TraineeCapacity')->orderby($column, $dir)->offset($offset)->limit($limit)->get();
+            $jsonArray['data'] = array();
+            $index = 0;
+            foreach ($data as $r) {
+                $index++;
+                $jsonObject = array();
+                $jsonObject[] = $index;
+                $jsonObject[] = $r->name;
+                $jsonObject[] = '<input type="number" class="form-control w-50" value="'.$r->TraineeCapacity->capcaity.'" onkeyup="capacityupdate('.$r->TraineeCapacity->id.',this)">';
+                $jsonArray['data'][] = $jsonObject;
+            }
+
+            return json_encode($jsonArray);
+        }
+        public function capacityUpdate(Request $request){
+            $request->validate([
+                'capacity_id'       => 'required',
+                'capacity'          => 'required',
+            ]);
+
+            $capacitys = TraineeCapacity::find($request->capacity_id);
+            $capacitys->capcaity = $request->capacity;
+            $capacitys->save();
+
+            return response()->json(['success' => true, 'message' => 'Capacity update successfully']);
         }
     // ======================================== Capacity ========================================
 }

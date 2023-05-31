@@ -39,6 +39,8 @@ Route::group(['prefix' => 'superadmin', "middleware" => ['is_super_admin']], fun
     Route::resource('units', UnitsController::class);
     Route::post('units/datatable', [UnitsController::class, 'datatable'])->name('super.admin.units.datatable');
     Route::get('unit/capacity', [UnitsController::class, 'capacity'])->name('super.admin.unit.capacity');
+    Route::post('unit/capacity/datatable', [UnitsController::class, 'capacityDatatable'])->name('super.admin.unit.capacity.datatable');
+    Route::post('unit/capacity/update', [UnitsController::class, 'capacityUpdate'])->name('super.admin.unit.capacity.update');
 
     Route::get('learning-specialty', [ServicesController::class, 'learningSpecialty'])->name('super.admin.learning.specialty');
 

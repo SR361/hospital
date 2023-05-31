@@ -10,10 +10,12 @@
                     </div>
                     <div class="col-md-11 d-flex justify-content-center">
                         <ul class="nav navbar-right panel_toolbox mr-5">
-                            <select name="" class="form-control mr-5">
+                            <select name="" class="form-control mr-5 ls_id">
                                 <option value="">Select Learning Specialty</option>
+                                @php $index = 1 @endphp
                                 @foreach($learning as $row)
-                                    <option value="{{$row->id}}">{{$row->name}}</option>
+                                    <option @if($index == 1) selected @endif value="{{$row->id}}">{{$row->name}}</option>
+                                    @php $index++ @endphp
                                 @endforeach
                             </select>
                         </ul>
@@ -25,7 +27,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card-box table-responsive">
-                        <table id="units-datatable" class="table table-striped table-bordered bulk_action" style="width:100%">
+                        <table id="capacity-datatable" class="table table-striped table-bordered bulk_action" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Id</th>
@@ -33,17 +35,6 @@
                                     <th>Capacity</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @php $index = 1 @endphp
-                                @foreach($traineecapacity as $row)
-                                    <tr>
-                                        <td>{{$index}}</td>
-                                        <td>{{$row->units->name}}</td>
-                                        <td><input type="number" value="{{$row->capcaity}}"></td>
-                                    </tr>
-                                    @php $index++ @endphp
-                                @endforeach
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -54,3 +45,71 @@
   </div>
 
 @endsection
+
+@push('script')
+    <script>
+        let ls_id = $('.ls_id').val();
+        let capacity = 0;
+        let capacityid = null;
+        datatable();
+        $('.ls_id').change(function(){
+            ls_id = $('.ls_id').val();
+            $('#capacity-datatable').DataTable().ajax.reload();
+        })
+
+        function capacityupdate(capacity_id,e){
+            capacity = e.value;
+            capacityid = capacity_id;
+            setTimeout(updateCapacity, 4000);
+        }
+
+        function updateCapacity(){
+            $.ajax({
+                url: "{{ route('super.admin.unit.capacity.update') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    capacity_id: capacityid,
+                    capacity: capacity
+                },
+                success: function(response) {
+                    if (response.success == true) {
+                        Swal.fire({
+                            toast : true,
+                            position: 'bottom-end',
+                            icon: 'success',
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 4000
+                        })
+                    }
+                }
+            });
+
+        }
+
+        function datatable(){
+            var table = $("#capacity-datatable").DataTable({
+                "pagingType": "full_numbers",
+                "processing": true,
+                "serverSide": true,
+                "order": [0, 'desc'],
+                "ajax": {
+                    "url": base_url + "/unit/capacity/datatable",
+                    "dataType": "json",
+                    "type": "POST",
+                    data: function(data) {
+                        data.ls_id = ls_id;
+                        data._token = token;
+                    }
+                },
+                columnDefs: [{
+                    "targets": [1],
+                    "orderable": false
+                }]
+            });
+        }
+
+
+    </script>
+@endpush

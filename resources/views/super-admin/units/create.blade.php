@@ -34,20 +34,29 @@
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Short Name</label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input type="text" id="last-name" name="short_name" required="required" class="form-control">
+                                    <input type="text" id="last-name" name="short_name" required="required" class="form-control" >
                                 </div>
                             </div>
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align">LS</label>
-                                @php $index = 0 @endphp
-                                @foreach($learning as $row)
-                                    <div class="radio mt-2 @if($index != 0) ml-2 @endif">
-                                        <label>
-                                            <input type="radio" name="ls_id" value="{{$row->id}}" class="flat"> {{$row->name}}
-                                        </label>
-                                    </div>
-                                    @php $index++; @endphp
-                                @endforeach
+                                <div class="col-md-6 col-sm-6 ">
+                                    <select class="select2_single form-control" name="ls_id" tabindex="-1">
+                                        <option value="">Select Learning Specialty</option>
+                                        @foreach($learning as $row)
+                                            <option value="{{ $row->id }}">{{ $row->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align">Status</label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <select class="select2_single form-control" name="status" tabindex="-1">
+                                        <option value="">Select Status</option>
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="ln_solid"></div>
                             <div class="item form-group">

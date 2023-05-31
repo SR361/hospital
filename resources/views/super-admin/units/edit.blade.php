@@ -40,15 +40,24 @@
                             </div>
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align">LS</label>
-                                @php $index = 0 @endphp
-                                @foreach($learning as $row)
-                                    <div class="radio mt-2 @if($index != 0) ml-2 @endif">
-                                        <label>
-                                            <input type="radio" name="ls_id" value="{{$row->id}}" @if($units->ls_id == $row->id) checked @endif class="flat"> {{$row->name}}
-                                        </label>
-                                    </div>
-                                    @php $index++; @endphp
-                                @endforeach
+                                <div class="col-md-6 col-sm-6 ">
+                                    <select class="select2_single form-control" name="ls_id" tabindex="-1">
+                                        <option value="">Select Learning Specialty</option>
+                                        @foreach($learning as $row)
+                                            <option @if($units->ls_id == $row->id) selected @endif value="{{ $row->id }}">{{ $row->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align">Status</label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <select class="select2_single form-control" name="status" tabindex="-1">
+                                        <option value="">Select Status</option>
+                                        <option @if($units->status == '1') selected @endif value="1">Yes</option>
+                                        <option @if($units->status == '0') selected @endif value="0">No</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="ln_solid"></div>
                             <div class="item form-group">
