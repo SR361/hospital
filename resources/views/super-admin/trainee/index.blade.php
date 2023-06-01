@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card-box table-responsive">
-                            <table id="datatable-checkbox" class="table table-striped table-bordered bulk_action" style="width:100%">
+                            <table id="trainee-datatable" class="table table-striped table-bordered bulk_action" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>Id</th>
@@ -25,58 +25,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Tiger Nixon</td>
-                                        <td>Male</td>
-                                        <td>Internship</td>
-                                        <td>King Saud University</td>
-                                        <td>1 Jun 2022 / 1 Jan 2023</td>
-                                        <td>52 Weeks</td>
-                                        <td>
-                                            <span class="btn btn-sm btn-success">Edit</span>
-                                            <span class="btn btn-sm btn-danger">Delete</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Garrett Winters</td>
-                                        <td>Female</td>
-                                        <td>Internship</td>
-                                        <td>Princess Nourah University</td>
-                                        <td>1 Jun 2022 / 1 Jan 2023</td>
-                                        <td>52 Weeks</td>
-                                        <td>
-                                            <span class="btn btn-sm btn-success">Edit</span>
-                                            <span class="btn btn-sm btn-danger">Delete</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Ashton Cox</td>
-                                        <td>Female</td>
-                                        <td>Internship</td>
-                                        <td>Military Hospital</td>
-                                        <td>2 Feb 2022 / 31 Jan 2023</td>
-                                        <td>2 Years</td>
-                                        <td>
-                                            <span class="btn btn-sm btn-success">Edit</span>
-                                            <span class="btn btn-sm btn-danger">Delete</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>Cedric Kelly</td>
-                                        <td>Male</td>
-                                        <td>Internship</td>
-                                        <td>King Saud University</td>
-                                        <td>1 Jun 2022 / 1 Jan 2023</td>
-                                        <td>52 Weeks</td>
-                                        <td>
-                                            <span class="btn btn-sm btn-success">Edit</span>
-                                            <span class="btn btn-sm btn-danger">Delete</span>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -88,3 +36,53 @@
 </div>
 
 @endsection
+@push('script')
+    <script>
+        var table = $("#trainee-datatable").DataTable({
+            "pagingType": "full_numbers",
+            "processing": true,
+            "serverSide": true,
+            "order": [0, 'desc'],
+            "ajax": {
+                "url": base_url + "/trainee/datatable",
+                "dataType": "json",
+                "type": "POST",
+                data: function(data) {
+                    data._token = token;
+                }
+            },
+            columnDefs: [{
+                "targets": [1],
+                "orderable": false
+            }]
+        });
+        function confirmDeletion(url){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to delete this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        data: {"_token": token},
+                        success: function(data) {
+                            $('#units-datatable').DataTable().ajax.reload();
+                            Swal.fire(
+                                'Deleted!',
+                                'Your record has been deleted.',
+                                'success'
+                            )
+                            table.ajax.reload();
+                        }
+                    });
+                }
+            })
+        }
+    </script>
+@endpush

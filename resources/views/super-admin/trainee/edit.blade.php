@@ -11,33 +11,34 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <form id="demo-form2" class="trainee-form" data-parsley-validate class="form-horizontal form-label-left"
-                            action="{{ route('trainee.store') }}"
+                            action="{{ route('trainee.update',[$trainee->id]) }}"
                             redirecturl="{{ route('trainee.index') }}"
                             method="post"
                             >
+                            @method('PATCH')
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Name</label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input type="text" name="name" required="required" class="form-control">
+                                    <input value="{{ $trainee->name }}" type="text" name="name" required="required" class="form-control">
                                 </div>
                             </div>
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Image</label>
                                 <div class="col-md-6 col-sm-6 ">
                                     <input type="file" name="image" required="required" class="form-control-file images-input">
-                                    <img id="blah" src="#" alt="your image" class="images-input w-50 mt-2 " style="display: none;"/>
+                                    <img id="blah" src="{{ asset('trainee-image/'.$trainee->image) }}" alt="your image" class="images-input w-50 mt-2 " />
                                 </div>
                             </div>
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Gender</label>
                                 <div class="radio mt-2 mr-2">
                                     <label>
-                                        <input type="radio" class="flat" name="gender" value="male"> Male
+                                        <input @if($trainee->gender == 'Male') checked @endif type="radio" class="flat" name="gender" value="male"> Male
                                     </label>
                                 </div>
                                 <div class="radio mt-2">
                                     <label>
-                                        <input type="radio" class="flat" name="gender" value="female"> Female
+                                        <input @if($trainee->gender == 'Female') checked @endif type="radio" class="flat" name="gender" value="female"> Female
                                     </label>
                                 </div>
                             </div>
@@ -47,7 +48,9 @@
                                     <select class="select2_single form-control" tabindex="-1" name="training_id">
                                         <option value="">Select Training</option>
                                         @foreach($training as $row)
-                                            <option value="{{ $row->id}}"> {{ $row->name }}</option>
+                                            <option
+                                                @if($trainee->training_id == $row->id) selected @endif
+                                                value="{{ $row->id}}"> {{ $row->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -55,7 +58,7 @@
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Location</label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input type="text" name="location" required="required" class="form-control">
+                                    <input value="{{$trainee->location}}" type="text" name="location" required="required" class="form-control">
                                 </div>
                             </div>
                             <div class="item form-group">
@@ -64,7 +67,8 @@
                                     <select class="select2_single form-control learning-specialty-select" tabindex="-1" name="ls_id">
                                         <option value="">Select Learning Specialty</option>
                                         @foreach($learning as $row)
-                                            <option value="{{ $row->id}}"> {{ $row->name }}</option>
+                                            <option @if($trainee->ls_id == $row->id) selected @endif
+                                            value="{{ $row->id}}"> {{ $row->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -72,8 +76,15 @@
                             <div class="item form-group">
                                 <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Units</label>
                                 <div class="col-md-6 col-sm-6 ">
+                                    @php
+                                        $units = App\Models\Unit::where('ls_id',$trainee->ls_id)->where('status','1')->get();
+                                    @endphp
                                     <select class="select2_single form-control units-select" name="units_id" tabindex="-1">
                                         <option value="">Select Units</option>
+                                        @foreach($units as $row)
+                                            <option  @if($trainee->units_id == $row->id) selected @endif
+                                            value="{{$row->id}}">{{$row->name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -81,14 +92,14 @@
                             <div class="item form-group">
                                 <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">University/collage/institution</label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input class="form-control" type="text" name="university">
+                                    <input value="{{ $trainee->university }}" class="form-control" type="text" name="university">
                                 </div>
                             </div>
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align">Start Date <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input name="start_date" id="birthday" class="date-picker form-control" placeholder="dd-mm-yyyy" type="text" required="required" type="text" onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
+                                    <input value="{{$trainee->start_date}}" name="start_date" id="birthday" class="date-picker form-control" placeholder="dd-mm-yyyy" type="text" required="required" type="text" onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
                                     <script>
                                         function timeFunctionLong(input) {
                                             setTimeout(function() {
@@ -102,7 +113,7 @@
                                 <label class="col-form-label col-md-3 col-sm-3 label-align">End Date <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input name="end_date" id="enndate" class="date-picker form-control" placeholder="dd-mm-yyyy" type="text" required="required" type="text" onfocus="this.type='date'"
+                                    <input value="{{$trainee->end_date}}" name="end_date" id="enndate" class="date-picker form-control" placeholder="dd-mm-yyyy" type="text" required="required" type="text" onfocus="this.type='date'"
                                     onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
                                     <script>
                                         function timeFunctionLong(input) {

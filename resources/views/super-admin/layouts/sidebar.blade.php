@@ -23,8 +23,8 @@
                 </a>
                 <ul class="nav child_menu">
                     <li><a href="{{ route('super.admin.type.programs') }}">Types Of Programs </a></li>
-                    <li><a href="{{ route('super.admin.trainee') }}">Lists Trainee</a></li>
-                    <li><a href="{{ route('super.admin.trainee.create') }}">Add Trainee </a></li>
+                    <li><a href="{{ route('trainee.index') }}">Lists Trainee</a></li>
+                    <li><a href="{{ route('trainee.create') }}">Add Trainee </a></li>
                     <li><a href="javascript:;">Import Trainee</a></li>
                 </ul>
             </li>
