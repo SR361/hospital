@@ -64,6 +64,8 @@ Route::group(['prefix' => 'superadmin', "middleware" => ['is_super_admin']], fun
     Route::resource('trainee', TraineeController::class);
     Route::get('trainees/type-programs', [TraineeController::class, 'typePrograms'])->name('super.admin.type.programs');
     Route::post('trainee/datatable', [TraineeController::class, 'datatable'])->name('super.admin.unit.trainee.datatable');
+    Route::get('trainees/import', [TraineeController::class, 'traineeImport'])->name('super.admin.trainee.import');
+    Route::post('trainees/import/store', [TraineeController::class, 'traineeImportStore'])->name('super.admin.trainee.import.store');
     // Route::get('trainee', [TraineeController::class, 'index'])->name('super.admin.trainee');
     // Route::get('trainee/create', [TraineeController::class, 'create'])->name('super.admin.trainee.create');
 

@@ -9,6 +9,9 @@ use App\Models\Trainee;
 use App\Models\LearningSpecialty;
 use App\Models\Unit;
 use App\Traits\CustomFileUpload;
+use App\Imports\TraineeImport;
+use App\Http\Requests\TraineeImportRequest;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TraineeController extends Controller
 {
@@ -184,5 +187,13 @@ class TraineeController extends Controller
         }
     }
 
+    public function traineeImport(){
+        $page = 'Trainee Import';
+        return view('super-admin.trainee.import',compact('page'));
+    }
 
+    public function traineeImportStore(TraineeImportRequest $request){
+        Excel::import(new TraineeImport,$request->file('upload_csv'));
+        return response()->json(['success' => true, 'message' => 'Trainee data import successfully']);
+    }
 }
