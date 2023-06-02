@@ -56,8 +56,8 @@
                     <div class="ln_solid"></div>
                     <div class="item form-group">
                         <div class="col-md-6 col-sm-6 offset-md-3">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-success">Submit</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </form>
@@ -160,7 +160,7 @@
             "pagingType": "full_numbers",
             "processing": true,
             "serverSide": true,
-            "order": [0, 'desc'],
+            "order": [1, 'desc'],
             "ajax": {
                 "url": base_url + "/divisions/datatable",
                 "dataType": "json",
@@ -170,7 +170,7 @@
                 }
             },
             columnDefs: [{
-                "targets": [1],
+                "targets": [0,2],
                 "orderable": false
             }]
         });

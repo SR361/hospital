@@ -19,30 +19,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Medical</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Surgical</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Paediatric</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>Critical Care</td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>Women Health</td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>Procedural</td>
-                                    </tr>
+                                    @foreach($ls as $row)
+                                        <tr>
+                                            <td>{{$row->id}}</td>
+                                            <td>{{$row->name}}</td>
+                                        </tr>
+                                    @endforeach
+
                                 </tbody>
                             </table>
                         </div>

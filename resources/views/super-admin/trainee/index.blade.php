@@ -42,7 +42,7 @@
             "pagingType": "full_numbers",
             "processing": true,
             "serverSide": true,
-            "order": [0, 'desc'],
+            "order": [1, 'desc'],
             "ajax": {
                 "url": base_url + "/trainee/datatable",
                 "dataType": "json",
@@ -52,7 +52,7 @@
                 }
             },
             columnDefs: [{
-                "targets": [1],
+                "targets": [0,3,6,7],
                 "orderable": false
             }]
         });

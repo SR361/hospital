@@ -25,7 +25,7 @@
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Image</label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input type="file" name="image" required="required" class="form-control-file images-input">
+                                    <input type="file" name="image" class="form-control-file images-input">
                                     <img id="blah" src="{{ asset('trainee-image/'.$trainee->image) }}" alt="your image" class="images-input w-50 mt-2 " />
                                 </div>
                             </div>

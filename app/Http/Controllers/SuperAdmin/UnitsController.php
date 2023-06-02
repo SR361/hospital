@@ -14,15 +14,17 @@ class UnitsController extends Controller
     public function index()
     {
         $page = 'Units';
-        return view('super-admin.units.index',compact('page'));
+        $learning = LearningSpecialty::get();
+        return view('super-admin.units.index',compact('page','learning'));
     }
 
     public function datatable(Request $request){
         $jsonArray = array();
         $jsonArray['draw'] = intval($request->input('draw'));
         $columns = array(
-            0 => 'name',
-            1 => 'short_name'
+            2 => 'name',
+            3 => 'short_name',
+            5 => 'status'
         );
 
         $column = $columns[$request->order[0]['column']];
@@ -30,6 +32,9 @@ class UnitsController extends Controller
         $offset = $request->start;
         $limit = $request->length;
         $data = new Unit();
+        if(isset($request->ls_id)){
+            $data = $data->where('ls_id',$request->ls_id);
+        }
         $jsonArray['recordsTotal'] = $data->count();
 
         if ($request->search['value']) {
@@ -82,6 +87,9 @@ class UnitsController extends Controller
             'short_name'        => 'required',
             'ls_id'             => 'required',
             'status'            => 'required'
+        ],[
+            'division_id.required'  => 'The division field is required.',
+            'ls_id.required'        => 'The learning specialty field is required.'
         ]);
 
         $data = $request->only('division_id','name','short_name','ls_id','status');
@@ -110,6 +118,9 @@ class UnitsController extends Controller
             'short_name'        => 'required',
             'ls_id'             => 'required',
             'status'            => 'required',
+        ],[
+            'division_id.required'  => 'The division field is required.',
+            'ls_id.required'        => 'The learning specialty field is required.'
         ]);
 
         $unit = Unit::find($id);
@@ -133,17 +144,17 @@ class UnitsController extends Controller
 
     // ======================================== Capacity ========================================
 
-        public function capacityUpdate(Request $request){
-            $request->validate([
-                'capacity_id'       => 'required',
-                'capacity'          => 'required',
-            ]);
+        // public function capacityUpdate(Request $request){
+        //     $request->validate([
+        //         'capacity_id'       => 'required',
+        //         'capacity'          => 'required',
+        //     ]);
 
-            $capacitys = TraineeCapacity::find($request->capacity_id);
-            $capacitys->capcaity = $request->capacity;
-            $capacitys->save();
+        //     $capacitys = TraineeCapacity::find($request->capacity_id);
+        //     $capacitys->capcaity = $request->capacity;
+        //     $capacitys->save();
 
-            return response()->json(['success' => true, 'message' => 'Capacity update successfully']);
-        }
+        //     return response()->json(['success' => true, 'message' => 'Capacity update successfully']);
+        // }
     // ======================================== Capacity ========================================
 }

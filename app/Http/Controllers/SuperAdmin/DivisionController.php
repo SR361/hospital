@@ -13,7 +13,7 @@ class DivisionController extends Controller
      */
     public function index()
     {
-        $page = 'Divisions';
+        $page = 'Division';
         return view('super-admin.service.divisions',compact('page'));
     }
 
@@ -44,7 +44,8 @@ class DivisionController extends Controller
         $jsonArray = array();
         $jsonArray['draw'] = intval($request->input('draw'));
         $columns = array(
-            0 => 'name',
+            0 => 'id',
+            1 => 'name',
         );
 
         $column = $columns[$request->order[0]['column']];

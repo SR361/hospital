@@ -29,10 +29,10 @@ class TraineeController extends Controller
         $jsonArray = array();
         $jsonArray['draw'] = intval($request->input('draw'));
         $columns = array(
-            0 => 'name',
-            1 => 'gender',
-            2 => 'location',
-            3 => 'university',
+            1 => 'name',
+            2 => 'gender',
+            4 => 'university',
+            5 => 'start_date'
         );
 
         $column = $columns[$request->order[0]['column']];
@@ -113,7 +113,7 @@ class TraineeController extends Controller
             'location'      => $validated['location'],
             'ls_id' => $validated['ls_id'],
             'units_id' => $validated['units_id'],
-            'university' => $validated['units_id'],
+            'university' => $validated['university'],
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
         ]);
@@ -132,7 +132,6 @@ class TraineeController extends Controller
     public function update(Request $request, string $id){
         $validated = request()->validate([
             'name' => 'required',
-            'image' => 'required',
             'gender' => 'required',
             'training_id' => 'required',
             'location' => 'required',

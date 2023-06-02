@@ -93,7 +93,7 @@
                 "pagingType": "full_numbers",
                 "processing": true,
                 "serverSide": true,
-                "order": [0, 'desc'],
+                "order": [2, 'desc'],
                 "ajax": {
                     "url": base_url + "/unitscapacity/datatable",
                     "dataType": "json",
@@ -104,7 +104,7 @@
                     }
                 },
                 columnDefs: [{
-                    "targets": [1],
+                    "targets": [0,1,3],
                     "orderable": false
                 }]
             });

@@ -27,7 +27,7 @@ class UnitCapacityController extends Controller
         $jsonArray = array();
         $jsonArray['draw'] = intval($request->input('draw'));
         $columns = array(
-            0 => 'name',
+            2 => 'name',
         );
 
         $column = $columns[$request->order[0]['column']];
@@ -126,14 +126,14 @@ class UnitCapacityController extends Controller
                     'units_id' => $request->unitid, 'training_id' => $request->trainingid, 'status' => $request->status
                 );
                 $traineecapacity = TraineeUnitsCapacity::create($createdata);
-                return response()->json(['success' => true, 'message' => 'Training capacity create successfully']);
+                return response()->json(['success' => true, 'message' => 'Training capacity created successfully']);
             }else{
                 $updatedata = array(
                     'units_id' => $request->unitid, 'training_id' => $request->trainingid, 'status' => $request->status
                 );
                 $traineecapacity = TraineeUnitsCapacity::where('units_id',$request->unitid)->where('training_id',$request->trainingid)->update($updatedata);
             }
-            return response()->json(['success' => true, 'message' => 'Training capacity update successfully']);
+            return response()->json(['success' => true, 'message' => 'Training capacity updated successfully']);
         }
     }
 

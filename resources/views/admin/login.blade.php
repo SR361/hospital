@@ -29,6 +29,11 @@
             <form method="post" action="{{ route('admin.login.post') }}">
                 @csrf
                 <h1>Login Form</h1>
+                @if (Session::has('message'))
+                        <div class="alert alert-success" role="alert">
+                        {{ Session::get('message') }}
+                    </div>
+                @endif
                 <div>
                     <input name="email" type="text" class="form-control" placeholder="Username" required="" />
                     <span style="color:red" class="help-block is-invalid">
@@ -49,22 +54,21 @@
                     <button type="submit" class="btn btn-primary submit" href="index.html">Log in</button>
                 </div>
                 <div class="clearfix"></div>
-                {{-- <div class="separator">
-                    <p class="change_link">New to site?
-                        <a href="#signup" class="to_register"> Create Account </a>
+                <div class="separator">
+                    <p class="change_link">{{-- New to site? --}}
+                        <a href="{{route('admin.forgot.password')}}" class="to_forgotpassword"> I forgot my password</a>
                     </p>
                     <div class="clearfix"></div>
-                    <br />
+                    {{-- <br />
                     <div>
                         <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
                         <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 4 template. Privacy and Terms</p>
-                    </div>
-                </div> --}}
+                    </div> --}}
+                </div>
             </form>
           </section>
         </div>
-
-        <div id="register" class="animate form registration_form">
+        {{-- <div id="register" class="animate form registration_form">
             <section class="login_content">
                 <form>
                 <h1>Create Account</h1>
@@ -98,7 +102,7 @@
                 </div>
                 </form>
             </section>
-        </div>
+        </div> --}}
       </div>
     </div>
   </body>

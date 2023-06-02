@@ -4,12 +4,32 @@
     <div class="col-md-12 col-sm-12  ">
         <div class="x_panel">
             <div class="x_title">
-                <h2>{{$page}}</h2>
+                {{-- <h2>{{$page}}</h2>
                 <ul class="nav navbar-right panel_toolbox">
                     <a href="{{ route('units.create') }}" class="btn btn-sm btn-success">
                         <i class="fa fa-plus"></i> Add {{$page}}
                     </a>
-                </ul>
+                </ul> --}}
+                <div class="row">
+                    <div class="col-md-1">
+                        <h2>{{$page}}</h2>
+                    </div>
+                    <div class="col-md-9 d-flex justify-content-center">
+                        <ul class="nav navbar-right panel_toolbox mr-5">
+                            <select name="" class="form-control mr-5 ls_id">
+                                <option value="">Select Learning Specialty</option>
+                                @foreach($learning as $row)
+                                    <option value="{{$row->id}}">{{$row->name}}</option>
+                                @endforeach
+                            </select>
+                        </ul>
+                    </div>
+                    <div class="col-md-2 d-flex justify-content-end">
+                        <a href="{{ route('units.create') }}" class="btn btn-sm btn-success">
+                            <i class="fa fa-plus"></i> Add {{$page}}
+                        </a>
+                    </div>
+                </div>
                 <div class="clearfix"></div>
             </div>
         <div class="x_content">
@@ -42,24 +62,35 @@
 @endsection
 @push('script')
     <script>
-        var table = $("#units-datatable").DataTable({
-            "pagingType": "full_numbers",
-            "processing": true,
-            "serverSide": true,
-            "order": [1, 'desc'],
-            "ajax": {
-                "url": base_url + "/units/datatable",
-                "dataType": "json",
-                "type": "POST",
-                data: function(data) {
-                    data._token = token;
-                }
-            },
-            columnDefs: [{
-                "targets": [1],
-                "orderable": false
-            }]
-        });
+        let ls_id = $('.ls_id').val();
+        datatable();
+
+        $('.ls_id').change(function(){
+            ls_id = $('.ls_id').val();
+            $('#units-datatable').DataTable().ajax.reload();
+        })
+
+        function datatable(){
+            var table = $("#units-datatable").DataTable({
+                "pagingType": "full_numbers",
+                "processing": true,
+                "serverSide": true,
+                "order": [2, 'desc'],
+                "ajax": {
+                    "url": base_url + "/units/datatable",
+                    "dataType": "json",
+                    "type": "POST",
+                    data: function(data) {
+                        data.ls_id = ls_id;
+                        data._token = token;
+                    }
+                },
+                columnDefs: [{
+                    "targets": [0,1,4,6],
+                    "orderable": false
+                }]
+            });
+        }
 
         function confirmDeletion(url){
             Swal.fire({

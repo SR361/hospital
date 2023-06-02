@@ -74,7 +74,7 @@
                             <img src="{{ asset('admin/images/img.jpg')}}" alt="">John Doe
                         </a>
                         <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                            {{-- <a class="dropdown-item"  href="javascript:;"> Profile</a> --}}
+                            <a class="dropdown-item" href="{{ route('profile.index') }}"> Profile</a>
                             {{-- <a class="dropdown-item"  href="javascript:;">
                                 <span class="badge bg-red pull-right">50%</span>
                                 <span>Settings</span>
@@ -90,7 +90,7 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="">
-            <div class="page-title">
+            {{-- <div class="page-title">
               <div class="title_left">
                 <h3>{{$page}} </h3>
               </div>
@@ -105,7 +105,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> --}}
 
             <div class="clearfix"></div>
 

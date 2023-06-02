@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\SuperAdmin\SuperAdminDashboardController;
+use App\Http\Controllers\SuperAdmin\ProfileController;
 use App\Http\Controllers\SuperAdmin\ServicesController;
 use App\Http\Controllers\SuperAdmin\DivisionController;
 use App\Http\Controllers\SuperAdmin\TraineeController;
@@ -29,10 +30,19 @@ Route::namespace('Admin')->prefix("admin")->group(function () {
 
     Route::post('login', [AuthController::class, 'login'])->name('admin.login.post');
     Route::get('logout', [AuthController::class, 'logout'])->name('admin.logout');
+
+    Route::get('forgot-password', function () {
+        return view('admin.forgotpssword');
+    })->name('admin.forgot.password');
+    Route::post('for-password', [AuthController::class, 'forgotPassword'])->name('admin.forgot.password.post');
+    Route::get('reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('reset.password.get');
+    Route::post('reset-password', [AuthController::class, 'submitResetPasswordForm'])->name('admin.reset.password.post');
 });
 
 Route::group(['prefix' => 'superadmin', "middleware" => ['is_super_admin']], function () {
     Route::get('dashboard', [SuperAdminDashboardController::class, 'dashboard'])->name('super.admin.dashboard');
+
+    Route::resource('profile', ProfileController::class);
 
     Route::resource('divisions', DivisionController::class);
     Route::post('divisions/datatable', [DivisionController::class, 'datatable'])->name('super.admin.divisions.datatable');
