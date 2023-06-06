@@ -18,7 +18,7 @@
                                         <th>Name</th>
                                         <th>Gender</th>
                                         <th>Training Program</th>
-                                        <th>University/collage/institution</th>
+                                        <th>University/college/institution</th>
                                         <th>Start Date And End Date</th>
                                         <th>Duration or Training</th>
                                         <th>Option</th>

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use File;
 
 class User extends Authenticatable
 {
@@ -20,6 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'image',
         'role_id',
         'password',
     ];
@@ -43,4 +45,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function getImageAttribute($value)
+    {
+        if(!isset($value)){
+            return asset('default.png');
+        }else{
+            if (File::exists(public_path('profile/'.$value))) {
+                return asset('profile/'.$value);
+            }else{
+                return asset('default.png');
+            }
+        }
+    }
 }

@@ -85,21 +85,20 @@ class TraineeController extends Controller
     public function store(Request $request){
         $validated = request()->validate([
             'name' => 'required',
-            'image' => 'required',
             'gender' => 'required',
             'training_id' => 'required',
             'location' => 'required',
-            'ls_id' => 'required',
-            'units_id' => 'required',
+            // 'ls_id' => 'required',
+            // 'units_id' => 'required',
             'university' => 'required',
             'start_date' => 'required',
             'end_date' => 'required',
         ], [
             'training_id.required' => 'The training field is required.',
-            'ls_id.required' => 'The learning specialty field is required.',
-            'units_id.required' => 'The unit field is required.',
+            // 'ls_id.required' => 'The learning specialty field is required.',
+            // 'units_id.required' => 'The unit field is required.',
         ]);
-        $imagename = '';
+        $imagename = NULL;
         if($request->file('image')){
             $image = $request->file('image');
             $imagename = $this->uploadFile(
@@ -114,8 +113,8 @@ class TraineeController extends Controller
             'gender' => $validated['gender'],
             'training_id' => $validated['training_id'],
             'location'      => $validated['location'],
-            'ls_id' => $validated['ls_id'],
-            'units_id' => $validated['units_id'],
+            // 'ls_id' => $validated['ls_id'],
+            // 'units_id' => $validated['units_id'],
             'university' => $validated['university'],
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
@@ -138,15 +137,15 @@ class TraineeController extends Controller
             'gender' => 'required',
             'training_id' => 'required',
             'location' => 'required',
-            'ls_id' => 'required',
-            'units_id' => 'required',
+            // 'ls_id' => 'required',
+            // 'units_id' => 'required',
             'university' => 'required',
             'start_date' => 'required',
             'end_date' => 'required',
         ], [
             'training_id.required' => 'The training field is required.',
-            'ls_id.required' => 'The learning specialty field is required.',
-            'units_id.required' => 'The unit field is required.',
+            // 'ls_id.required' => 'The learning specialty field is required.',
+            // 'units_id.required' => 'The unit field is required.',
         ]);
         $trainee = Trainee::find($id);
         $data = $request->only('name', 'gender', 'training_id', 'location', 'ls_id','units_id','university', 'start_date', 'end_date');

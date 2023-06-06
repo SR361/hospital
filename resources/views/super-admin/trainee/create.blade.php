@@ -24,7 +24,7 @@
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Image</label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input type="file" name="image" required="required" class="form-control-file images-input">
+                                    <input type="file" name="image" class="form-control-file images-input">
                                     <img id="blah" src="#" alt="your image" class="images-input w-50 mt-2 " style="display: none;"/>
                                 </div>
                             </div>
@@ -58,7 +58,7 @@
                                     <input type="text" name="location" required="required" class="form-control">
                                 </div>
                             </div>
-                            <div class="item form-group">
+                            {{-- <div class="item form-group">
                                 <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Learning Specialty</label>
                                 <div class="col-md-6 col-sm-6 ">
                                     <select class="select2_single form-control learning-specialty-select" tabindex="-1" name="ls_id">
@@ -76,10 +76,10 @@
                                         <option value="">Select Units</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="item form-group">
-                                <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">University/collage/institution</label>
+                                <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">University/college/institution</label>
                                 <div class="col-md-6 col-sm-6 ">
                                     <input class="form-control" type="text" name="university">
                                 </div>
@@ -117,6 +117,7 @@
                             <div class="item form-group">
                                 <div class="col-md-6 col-sm-6 offset-md-3">
                                     <button type="submit" class="btn btn-success">Submit</button>
+                                    <a href="{{URL::previous()}}" class="btn btn-primary">Back</a>
                                 </div>
                             </div>
                         </form>
@@ -209,22 +210,22 @@
             readURL(this);
         });
 
-        $('.learning-specialty-select').change(function(){
-            var ls_id = $(this).val();
+        // $('.learning-specialty-select').change(function(){
+        //     var ls_id = $(this).val();
 
-            $.ajax({
-                url: "{{ route('super.admin.ls.units') }}",
-                type: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    ls_id: ls_id,
-                },
-                success: function(response) {
-                    if (response.success == true) {
-                        $('.units-select').html(response.data);
-                    }
-                }
-            });
-        })
+        //     $.ajax({
+        //         url: "{{ route('super.admin.ls.units') }}",
+        //         type: "POST",
+        //         data: {
+        //             _token: "{{ csrf_token() }}",
+        //             ls_id: ls_id,
+        //         },
+        //         success: function(response) {
+        //             if (response.success == true) {
+        //                 $('.units-select').html(response.data);
+        //             }
+        //         }
+        //     });
+        // })
     </script>
 @endpush

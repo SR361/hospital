@@ -63,7 +63,8 @@
                             <div class="item form-group">
                                 <div class="col-md-6 col-sm-6 offset-md-3">
                                     {{-- <button class="btn btn-primary" type="button">Cancel</button> --}}
-                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="submit" class="btn btn-success">Update</button>
+                                    <a href="{{URL::previous()}}" class="btn btn-primary">Back</a>
                                 </div>
                             </div>
                         </form>

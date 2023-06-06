@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use File;
 
 class Trainee extends Model
 {
@@ -22,13 +23,13 @@ class Trainee extends Model
         'end_date',
     ];
 
-    public function getImageUrlAttribute()
+    public function getImageAttribute($value)
     {
-        if(!isset($this->image)){
+        if(!isset($value)){
             return asset('default.png');
         }else{
-            if (File::exists(public_path('public/trainee-image'.$this->image))) {
-                return asset('public/trainee-image/'.$this->image);
+            if (File::exists(public_path('trainee-image/'.$value))) {
+                return asset('trainee-image/'.$value);
             }else{
                 return asset('default.png');
             }

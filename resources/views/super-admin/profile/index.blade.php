@@ -29,28 +29,31 @@
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <form id="demo-form2" class="trainee-form" data-parsley-validate class="form-horizontal form-label-left"
-                            action="{{ route('trainee.store') }}"
-                            redirecturl="{{ route('trainee.index') }}"
+                        <form id="demo-form2" class="profile-form" data-parsley-validate class="form-horizontal form-label-left"
+                            action="{{ route('profile.update',[$profile->id]) }}"
+                            redirecturl="{{ route('profile.index') }}"
                             method="post"
                             >
+                            @csrf
+                            @method('PATCH')
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Name</label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input type="text" name="name" required="required" class="form-control">
+                                    <input type="text" name="name" required="required" class="form-control" value="{{$profile->name}}">
                                 </div>
                             </div>
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Email</label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input type="email" name="email" required="required" class="form-control">
+                                    <input type="email" name="email" required="required" class="form-control" disabled value="{{$profile->email}}">
                                 </div>
                             </div>
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Image</label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input type="file" name="image" required="required" class="form-control-file images-input">
-                                    <img id="blah" src="#" alt="your image" class="images-input w-50 mt-2 " style="display: none;"/>
+                                    <input type="file" name="image" class="form-control-file images-input">
+                                    {{-- <img id="blah" src="#" alt="your image" class="images-input w-50 mt-2 " style="display: none;"/> --}}
+                                    <img id="blah" src="{{ $profile->image }}" alt="your image" class=" w-50 mt-2 " />
                                 </div>
                             </div>
                             <div class="ln_solid"></div>
@@ -62,15 +65,15 @@
                         </form>
                     </div>
                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        <form id="demo-form2" class="trainee-form" data-parsley-validate class="form-horizontal form-label-left"
-                            action="{{ route('trainee.store') }}"
-                            redirecturl="{{ route('trainee.index') }}"
+                        <form id="demo-form2" class="change-password" data-parsley-validate class="form-horizontal form-label-left"
+                            action="{{ route('profile.change.password') }}"
+                            redirecturl="{{ route('profile.index') }}"
                             method="post"
                             >
                             <div class="item form-group">
-                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Old Password</label>
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Current Password</label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input type="password" name="old-password" required="required" class="form-control">
+                                    <input type="password" name="current_password" required="required" class="form-control">
                                 </div>
                             </div>
                             <div class="item form-group">
@@ -82,7 +85,7 @@
                             <div class="item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Confirm Password</label>
                                 <div class="col-md-6 col-sm-6 ">
-                                    <input type="password" name="confirm_password" required="required" class="form-control">
+                                    <input type="password" name="new_confirm_password" required="required" class="form-control">
                                 </div>
                             </div>
                             <div class="ln_solid"></div>
@@ -101,6 +104,140 @@
 @endsection
 @push('script')
     <script>
+        $('.profile-form').submit(function(e) {
+            e.preventDefault();
+            var frm = $(".profile-form");
+            var data = new FormData(this);
+            var redirecturl = $(this).attr("redirecturl");
+
+            $.ajax({
+                type: frm.attr('method'),
+                url: frm.attr('action'),
+                data : data,
+                contentType: false,
+                processData: false,
+                dataType : 'JSON',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.success == true) {
+
+                        Swal.fire({
+                            toast : true,
+                            position: 'bottom-end',
+                            icon: 'success',
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 4000
+                        })
+                        setTimeout(function() {
+                            location.href = redirecturl;
+                        }, 3000);
+                        //$('#division-datatable').DataTable().ajax.reload();
+                    }
+                },
+                error: function(data) {
+                    var errors = data.responseJSON;
+
+                    Swal.fire({
+                        toast : true,
+                        position: 'bottom-end',
+                        icon: 'warning',
+                        title: errors.message,
+                        showConfirmButton: false,
+                        timer: 9000
+                    })
+
+                    errorsHtml = '<div class="text-danger">';
+                    $.each(errors.errors, function(k, v) {
+                        errorsHtml += v + ', ';
+                        Swal.fire({
+                            toast : true,
+                            position: 'bottom-end',
+                            icon: 'warning',
+                            title: v,
+                            showConfirmButton: false,
+                            timer: 9000
+                        })
+                    });
+                    errorsHtml += '</div>';
+                    $('.division-form-errors').html(errorsHtml);
+                }
+            });
+        });
+
+        $('.change-password').submit(function(e) {
+            e.preventDefault();
+            var frm = $(".change-password");
+            var data = new FormData(this);
+            var redirecturl = $(this).attr("redirecturl");
+
+            $.ajax({
+                type: frm.attr('method'),
+                url: frm.attr('action'),
+                data : data,
+                contentType: false,
+                processData: false,
+                dataType : 'JSON',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.success == true) {
+                        Swal.fire({
+                            toast : true,
+                            position: 'bottom-end',
+                            icon: 'success',
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 4000
+                        })
+                        setTimeout(function() {
+                            location.href = redirecturl;
+                        }, 3000);
+                        //$('#division-datatable').DataTable().ajax.reload();
+                    }else{
+                        Swal.fire({
+                            toast : true,
+                            position: 'bottom-end',
+                            icon: 'warning',
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 9000
+                        })
+                    }
+                },
+                error: function(data) {
+                    var errors = data.responseJSON;
+
+                    Swal.fire({
+                        toast : true,
+                        position: 'bottom-end',
+                        icon: 'warning',
+                        title: errors.message,
+                        showConfirmButton: false,
+                        timer: 9000
+                    })
+
+                    errorsHtml = '<div class="text-danger">';
+                    $.each(errors.errors, function(k, v) {
+                        errorsHtml += v + ', ';
+                        Swal.fire({
+                            toast : true,
+                            position: 'bottom-end',
+                            icon: 'warning',
+                            title: v,
+                            showConfirmButton: false,
+                            timer: 9000
+                        })
+                    });
+                    errorsHtml += '</div>';
+                    $('.division-form-errors').html(errorsHtml);
+                }
+            });
+        });
+
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();

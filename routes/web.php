@@ -43,6 +43,7 @@ Route::group(['prefix' => 'superadmin', "middleware" => ['is_super_admin']], fun
     Route::get('dashboard', [SuperAdminDashboardController::class, 'dashboard'])->name('super.admin.dashboard');
 
     Route::resource('profile', ProfileController::class);
+    Route::post('profile/change-password', [ProfileController::class, 'changePassword'])->name('profile.change.password');
 
     Route::resource('divisions', DivisionController::class);
     Route::post('divisions/datatable', [DivisionController::class, 'datatable'])->name('super.admin.divisions.datatable');
