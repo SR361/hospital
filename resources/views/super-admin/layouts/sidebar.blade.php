@@ -29,7 +29,7 @@
                 </ul>
             </li>
             <li>
-                <a href="{{ route('super.admin.rotations.index') }}">
+                <a href="{{ route('rotation.index') }}">
                     <i class="fa fa-circle-o"></i>
                     Rotations
                 </a>

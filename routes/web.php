@@ -9,6 +9,7 @@ use App\Http\Controllers\SuperAdmin\DivisionController;
 use App\Http\Controllers\SuperAdmin\TraineeController;
 use App\Http\Controllers\SuperAdmin\UnitsController;
 use App\Http\Controllers\SuperAdmin\UnitCapacityController;
+use App\Http\Controllers\SuperAdmin\RotationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -72,4 +73,7 @@ Route::group(['prefix' => 'superadmin', "middleware" => ['is_super_admin']], fun
 
     Route::post('ls/units', [TraineeController::class, 'LSUnits'])->name('super.admin.ls.units');
 
+    Route::resource('rotation', RotationController::class);
+    Route::get('rotation/show/{id}/{rotation}', [RotationController::class, 'show'])->name('rotation.show');
+    Route::post('rotation/datatable', [RotationController::class, 'datatable'])->name('rotation.datatable');
 });
