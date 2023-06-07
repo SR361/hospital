@@ -5,6 +5,7 @@ namespace App\Http\Controllers\SuperAdmin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LearningSpecialty;
+use App\Models\Unit;
 
 class RotationController extends Controller
 {
@@ -57,8 +58,50 @@ class RotationController extends Controller
         return json_encode($jsonArray);
     }
 
+    public function datatableDTL(Request $request){
+        // dd($request->all());
+        $jsonArray = array();
+        $jsonArray['draw'] = intval($request->input('draw'));
+        $columns = array(
+            1 => 'name',
+        );
+
+        $column = $columns[$request->order[0]['column']];
+        $dir = $request->order[0]['dir'];
+        $offset = $request->start;
+        $limit = $request->length;
+        $data = new Unit();
+        $data = $data->where('ls_id',$request->ls_id);
+
+        // $data = $data->where('status','1');
+        $jsonArray['recordsTotal'] = $data->count();
+
+        if ($request->search['value']) {
+            $search = $request->search['value'];
+            $data = $data->where('name', 'like', "%{$search}%");
+        }
+
+        $jsonArray['recordsFiltered'] = $data->count();
+
+        $data = $data->with('TraineeCapacity')->orderby($column, $dir)->offset($offset)->limit($limit)->get();
+        $jsonArray['data'] = array();
+        $index = 0;
+        foreach ($data as $r) {
+            $index++;
+            $jsonObject = array();
+            $jsonObject[] = $index;
+            $jsonObject[] = $r->name;
+            $jsonObject[] = $r->TraineeCapacity->capcaity;
+            $jsonObject[] = 'Trainee';
+            $jsonArray['data'][] = $jsonObject;
+        }
+
+        return json_encode($jsonArray);
+    }
+
     public function show(string $id,$rotation){
         $page = 'Rotation';
-        return view('super-admin.rotations.show',compact('page','id','rotation'));
+        $ls_id = $id;
+        return view('super-admin.rotations.show',compact('page','ls_id','rotation'));
     }
 }

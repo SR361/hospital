@@ -20,7 +20,7 @@
                                         <th>Training Program</th>
                                         <th>University/college/institution</th>
                                         <th>Start Date And End Date</th>
-                                        <th>Duration or Training</th>
+                                        <th>Duration of Training</th>
                                         <th>Option</th>
                                     </tr>
                                 </thead>

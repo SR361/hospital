@@ -15,13 +15,13 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card-box table-responsive">
-                        <table id="rotation-datatable" class="table table-striped table-bordered bulk_action" style="width:100%">
+                        <table id="rotation-dtl-datatable" class="table table-striped table-bordered bulk_action" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Learning Specialty</th>
+                                    <th>Units</th>
                                     <th>Capacity</th>
-                                    <th>Group</th>
+                                    <th>Trainee</th>
                                 </tr>
                             </thead>
                         </table>
@@ -38,6 +38,7 @@
 @push('script')
     <script>
         $('#rotation-datatable').DataTable();
+        var ls_id = {{$ls_id}};
         // let rotation_id = $('.rotation-select-input').val();
 
         // datatable();
@@ -47,25 +48,25 @@
         // })
 
         // function datatable(){
-        //     var table = $("#ls-datatable").DataTable({
-        //         "pagingType": "full_numbers",
-        //         "processing": true,
-        //         "serverSide": true,
-        //         "order": [1, 'desc'],
-        //         "ajax": {
-        //             "url": base_url + "/rotation/datatable",
-        //             "dataType": "json",
-        //             "type": "POST",
-        //             data: function(data) {
-        //                 data.rotation_id = rotation_id;
-        //                 data._token = token;
-        //             }
-        //         },
-        //         columnDefs: [{
-        //             "targets": [0,2,3],
-        //             "orderable": false
-        //         }]
-        //     });
+            var table = $("#rotation-dtl-datatable").DataTable({
+                "pagingType": "full_numbers",
+                "processing": true,
+                "serverSide": true,
+                "order": [1, 'desc'],
+                "ajax": {
+                    "url": base_url + "/rotation/datatable-dtl",
+                    "dataType": "json",
+                    "type": "POST",
+                    data: function(data) {
+                        data.ls_id = ls_id;
+                        data._token = token;
+                    }
+                },
+                columnDefs: [{
+                    "targets": [0,2,3],
+                    "orderable": false
+                }]
+            });
         // }
 
 

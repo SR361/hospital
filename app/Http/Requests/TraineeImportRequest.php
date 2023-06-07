@@ -26,10 +26,10 @@ class TraineeImportRequest extends FormRequest
             'upload_csv'        => ['mimes:csv,txt,xls,xlsx', new CsvValidator([
                 'Name'         => 'required',
                 'Gender'        => ['required', 'in:Male,Female'],
-                'Training'      => ['required', 'exists:trainings,id'],
+                'Training Program'=> ['required', 'exists:trainings,id'],
                 'Location'      => 'required',
-                'LS'            => ['required', 'exists:learning_specialties,id'],
-                'Units'         => ['required', 'exists:units,id'],
+                // 'LS'            => ['required', 'exists:learning_specialties,id'],
+                // 'Units'         => ['required', 'exists:units,id'],
                 'University'    => 'required|string',
                 'Start Date'    => 'required',
                 'End Date'      => 'required',

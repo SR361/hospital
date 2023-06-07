@@ -1,5 +1,11 @@
 @extends('super-admin.layouts.app')
 @section('content')
+<style>
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
 <div class="row">
     <div class="col-md-12 col-sm-12  ">
         <div class="x_panel">

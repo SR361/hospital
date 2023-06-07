@@ -43,7 +43,7 @@
                                 </div>
                             </div>
                             <div class="item form-group">
-                                <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Trainin Program</label>
+                                <label for="middle-name" class="col-form-label col-md-3 col-sm-3 label-align">Training Program</label>
                                 <div class="col-md-6 col-sm-6 ">
                                     <select class="select2_single form-control" tabindex="-1" name="training_id">
                                         <option value="">Select Training</option>

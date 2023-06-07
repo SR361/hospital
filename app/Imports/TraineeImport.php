@@ -19,10 +19,10 @@ class TraineeImport implements ToModel, WithHeadingRow
         return new Trainee([
             'name'     => $row['name'],
             'gender'    => $row['gender'],
-            'training_id'    => $row['training'],
+            'training_id'    => $row['training_program'],
             'location'    => $row['location'],
-            'ls_id'    => $row['ls'],
-            'units_id'    => $row['units'],
+            // 'ls_id'    => $row['ls'],
+            // 'units_id'    => $row['units'],
             'university'    => $row['university'],
             'start_date'    => $row['start_date'],
             'end_date'    => $row['end_date'],

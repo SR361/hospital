@@ -76,4 +76,5 @@ Route::group(['prefix' => 'superadmin', "middleware" => ['is_super_admin']], fun
     Route::resource('rotation', RotationController::class);
     Route::get('rotation/show/{id}/{rotation}', [RotationController::class, 'show'])->name('rotation.show');
     Route::post('rotation/datatable', [RotationController::class, 'datatable'])->name('rotation.datatable');
+    Route::post('rotation/datatable-dtl', [RotationController::class, 'datatableDTL'])->name('rotation.datatable.dtl');
 });
